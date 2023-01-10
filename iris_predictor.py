@@ -140,6 +140,31 @@ def use_dempster_regel_for_entries(
 
     return accumulated_basismass
 
+# prints the results of the program
+def print_results(accumulated_basismass: Basismass) -> None:
+    print("Basismaß: " + str(accumulated_basismass.to_dictionary()))
+    print("")
+    print("Belief: ")
+    print("Setosa: " + str(accumulated_basismass.get_belief({"Iris-setosa"})))
+    print("Versicolor: " + str(accumulated_basismass.get_belief({"Iris-versicolor"})))
+    print("Virginica: " + str(accumulated_basismass.get_belief({"Iris-virginica"})))
+    print("")
+    print("Plausabilität: ")
+    print("Setosa: " + str(accumulated_basismass.get_plausibilitaet({"Iris-setosa"})))
+    print("Versicolor: " + str(accumulated_basismass.get_plausibilitaet({"Iris-versicolor"})))
+    print("Virginica: " + str(accumulated_basismass.get_plausibilitaet({"Iris-virginica"})))
+    print("")
+
+    largestPlantClass= ""
+    largestValue = 0
+    for plant_class in plant_classes:
+        value = accumulated_basismass.get_plausibilitaet({plant_class})
+        if value > largestValue:
+            largestValue = value
+            largestPlantClass = plant_class
+
+    print("Plausibelstes Ergebnis: " + str(largestPlantClass))
+
 ######################################################################
 #### MAIN ############################################################
 ######################################################################
@@ -155,4 +180,5 @@ m3 = get_basismass("petal-width", arguments["petal-width"], csv_data)
 m4 = dempster_regel(m0, m1)
 m5 = dempster_regel(m4, m2)
 m6 = dempster_regel(m5, m3)
-print(m6.to_dictionary())
+
+print_results(m6)

@@ -61,3 +61,28 @@ class Basismass:
             converted_basismass[key] = entry.probability
 
         return converted_basismass
+
+    def get_belief(self, entry_values: set) -> float:
+        belief = 0
+
+        for entry in self.basismass_entries:
+            if entry.is_omega:
+                continue
+
+            if entry.values <= entry_values:
+                belief = belief + entry.probability
+
+        return belief
+
+    def get_plausibilitaet(self, entry_values: set) -> float:
+        plausbilität = 0
+
+        for entry in self.basismass_entries:
+            if entry.is_omega:
+                continue
+
+            intersection = entry_values.intersection(entry.values)
+            if len(intersection) != 0:
+                plausbilität = plausbilität + entry.probability
+
+        return plausbilität
